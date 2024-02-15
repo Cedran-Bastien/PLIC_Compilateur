@@ -1,0 +1,19 @@
+    // Display
+    // J'ai pas le code
+programme testCompilateur {      // Display
+    // Declaration de variable
+    entier i ; entier k ;      // Salut
+$
+    // Affectation
+    i := 6 ;
+    k := 80 ;      // Display
+
+    // Display     // Commentaire qui sert a rien
+    ecrire i
+}
+    // Display    // Display
+        // Display
+          // Programme sert a rien: pas d'execution
+
+              // Display
+
