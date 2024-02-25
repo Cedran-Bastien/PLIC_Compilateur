@@ -1,9 +1,12 @@
 package plic.analyse;
 
+import plic.Exeption.SyntaxeException;
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class AnalyseurLexical {
     Scanner sc;
@@ -11,7 +14,7 @@ public class AnalyseurLexical {
         sc = new Scanner(file);
     }
 
-    public String next() throws EOFException {
+    public String next(){
         if (!sc.hasNext()){
             sc.close();
             return "EOF";
@@ -20,8 +23,11 @@ public class AnalyseurLexical {
         String next = sc.next();
         if (next.contains("//")){
             sc.nextLine();
-            return this.next();
+            next = this.next();
         }
+
+
+
 
         return next;
 
