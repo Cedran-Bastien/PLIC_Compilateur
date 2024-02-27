@@ -4,10 +4,8 @@ import plic.Exeption.DoubleException;
 import plic.Exeption.SyntaxeException;
 import plic.repint.*;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.sql.SQLOutput;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.regex.Pattern;
@@ -22,10 +20,6 @@ public class AnalyseurSynthaxique {
 
     public AnalyseurSynthaxique(File file) throws FileNotFoundException {
         analyseurLexical = new AnalyseurLexical(file);
-    }
-
-    private void printError(String message) {
-        System.out.println("ERREUR: "+message);
     }
 
     public Bloc analyse() throws SyntaxeException, DoubleException {
@@ -88,7 +82,7 @@ public class AnalyseurSynthaxique {
             while (!uniteCourante.equals("}")){
                 this.programmeModel.ajouter(this.analyseInstruction());
                 // Bloc end by '}'
-                this.analyseTerminal(!uniteCourante.equals("EOF"), "Top level bloc should end by '}'");
+                if (uniteCourante.equals("EOF")) throw new SyntaxeException("Top level bloc should end by '}'");
             }
         }
     }

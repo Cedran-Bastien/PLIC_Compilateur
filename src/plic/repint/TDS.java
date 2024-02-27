@@ -16,25 +16,39 @@ public class TDS {
     }
 
     public static TDS getInstance(){
-        if (tds != null) {
+        if (TDS.tds != null) {
             return tds;
         }
-        return new TDS();
+        TDS.tds = new TDS();
+        return TDS.tds;
     }
 
     public void ajouter(Entree entree, Symbole symbole) throws DoubleException {
-        if (this.declarationRequirement.keySet().stream().anyMatch((key) -> key.idf.equals(entree.idf))){
+        if (TDS.tds.declarationRequirement.keySet().stream().anyMatch((key) -> key.idf.equals(entree.idf))){
             throw new DoubleException(entree.idf);
         }
 
         // Set deplacement
         symbole.deplacement = dptDepl;
-        this.dptDepl -= 4;
+        TDS.tds.dptDepl -= 4;
 
-        this.declarationRequirement.put(entree, symbole);
+        TDS.tds.declarationRequirement.put(entree, symbole);
+        System.out.println();
     }
 
     public Map<Entree, Symbole> getDeclarationRequirement() {
         return declarationRequirement;
+    }
+
+    @Override
+    public String toString() {
+        String res = "TDS{" +
+                "\n\tdptDepl=" + dptDepl +
+                ", \n\tdeclarationRequirement= {";
+        for (Entree entree : this.declarationRequirement.keySet()){
+            res += "\n\t\tentree=" + entree +
+                    "\n\t\tSymbole=" + this.declarationRequirement.get(entree).toString();
+        }
+        return res + "\n\t}\n}";
     }
 }

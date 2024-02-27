@@ -12,8 +12,8 @@ public class Affectation extends Instruction {
     @Override
     public String toString() {
         return "Affectation{" +
-                "identifiant=" + identifiant.toString() +
-                ", expression=" + expression.toString() +
-                '}';
+                "\n\tidentifiant=" + identifiant.toString() +
+                ", \n\texpression=" + expression.toString() +
+                "\n}";
     }
 }

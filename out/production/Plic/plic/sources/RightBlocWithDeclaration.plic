@@ -1,4 +1,0 @@
-programme test {
-    entier i ;
-    ecrire i ;
-}

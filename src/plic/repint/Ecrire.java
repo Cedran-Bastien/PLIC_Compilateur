@@ -10,7 +10,7 @@ public class Ecrire extends Instruction {
     @Override
     public String toString() {
         return "Ecrire{" +
-                "expression=" + expression.toString() +
+                "\n\texpression=" + expression.toString() +
                 '}';
     }
 }

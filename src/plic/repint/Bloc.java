@@ -2,6 +2,7 @@ package plic.repint;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Bloc {
     List<Instruction> instructions;
@@ -16,6 +17,8 @@ public class Bloc {
 
     @Override
     public String toString() {
-        return this.instructions.stream().map((Object::toString)).toString();
+        return "Bloc{\n" +
+                "instructions=" + this.instructions.stream().map((Object::toString)).collect(Collectors.joining("\n")) +
+                "\n}";
     }
 }
