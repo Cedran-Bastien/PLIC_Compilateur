@@ -1,5 +1,7 @@
 package plic.repint;
 
+import plic.Exeption.SemanticExeption;
+
 public class Affectation extends Instruction {
     Idf identifiant;
     Expression expression;
@@ -15,5 +17,11 @@ public class Affectation extends Instruction {
                 "\n\tidentifiant=" + identifiant.toString() +
                 ", \n\texpression=" + expression.toString() +
                 "\n}";
+    }
+
+    @Override
+    public void verifier() throws SemanticExeption {
+        this.identifiant.verifier();
+        this.expression.verifier();
     }
 }

@@ -1,5 +1,7 @@
 package plic.repint;
 
+import plic.Exeption.SemanticExeption;
+
 public class Nombre extends Expression {
     int val;
 
@@ -12,5 +14,9 @@ public class Nombre extends Expression {
         return "Nombre{" +
                 "val=" + val +
                 '}';
+    }
+
+    @Override
+    public void verifier() throws SemanticExeption {
     }
 }

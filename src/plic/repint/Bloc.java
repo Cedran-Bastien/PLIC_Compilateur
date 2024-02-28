@@ -1,5 +1,7 @@
 package plic.repint;
 
+import plic.Exeption.SemanticExeption;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,6 +15,12 @@ public class Bloc {
 
     public void ajouter(Instruction instruction){
         this.instructions.add(instruction);
+    }
+
+    public void verifier() throws SemanticExeption {
+        for (Instruction instruction : this.instructions) {
+            instruction.verifier();
+        }
     }
 
     @Override

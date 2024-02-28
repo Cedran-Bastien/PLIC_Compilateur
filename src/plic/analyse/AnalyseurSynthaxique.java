@@ -55,7 +55,6 @@ public class AnalyseurSynthaxique {
 
     private Idf analyseAcces() throws SyntaxeException{
         if (!estIdf()){
-            uniteCourante = analyseurLexical.next();
             throw new SyntaxeException("Identifier must not be 'programme' and should just contains lowercase and uppercase");
         }
         Idf acces = new Idf(uniteCourante);
@@ -107,7 +106,7 @@ public class AnalyseurSynthaxique {
             try {
                 return this.analyseAffectation();
             } catch (SyntaxeException affectationException){
-                throw new SyntaxeException("Instruction should be Es or Affectation : error : " + esException.message + " or " + affectationException.message);
+                throw new SyntaxeException("Instruction should be Es or Affectation : error : " + esException.getMessage() + " or " + affectationException.getMessage());
             }
 
         }
@@ -142,7 +141,7 @@ public class AnalyseurSynthaxique {
             try {
                 return this.analyseAcces();
             } catch (SyntaxeException syntaxeException) {
-                throw new SyntaxeException("'" + valueNotCst+ "' should be an integer or : " + syntaxeException.message);
+                throw new SyntaxeException("'" + valueNotCst+ "' should be an integer or : " + syntaxeException.getMessage());
             }
         } else {
             Expression cst = new Nombre(Integer.parseInt(uniteCourante));
