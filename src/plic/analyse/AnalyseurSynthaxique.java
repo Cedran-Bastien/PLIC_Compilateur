@@ -141,7 +141,7 @@ public class AnalyseurSynthaxique {
             try {
                 return this.analyseAcces();
             } catch (SyntaxeException syntaxeException) {
-                throw new SyntaxeException("'" + valueNotCst+ "' should be an integer or : " + syntaxeException.getMessage());
+                throw new SyntaxeException("'" + valueNotCst+ "' should be an integer or : ");
             }
         } else {
             Expression cst = new Nombre(Integer.parseInt(uniteCourante));

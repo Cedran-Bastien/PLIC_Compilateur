@@ -24,4 +24,12 @@ public class Affectation extends Instruction {
         this.identifiant.verifier();
         this.expression.verifier();
     }
+
+    @Override
+    public String toMips() {
+        String value = this.expression.toMips();
+        String emplacementMemoire = this.identifiant.toMips();
+        return "li $v0, " + value + "\n" +
+                "sw $v0, " + emplacementMemoire;
+    }
 }

@@ -20,4 +20,16 @@ public class Idf extends Expression{
     public void verifier() throws SemanticExeption {
         TDS.getInstance().identifier(new Entree(this.nom));
     }
+
+    @Override
+    public String toMips() {
+        String memoryEmplacment = "";
+        try {
+            memoryEmplacment = String.valueOf(TDS.getInstance().identifier(new Entree(this.nom)).deplacement) ;
+        } catch (SemanticExeption semanticExeption){
+            System.out.println("ERREUR:" + semanticExeption.getMessage());
+        }
+        return """
+            %s($s7)""".formatted(memoryEmplacment);
+    }
 }

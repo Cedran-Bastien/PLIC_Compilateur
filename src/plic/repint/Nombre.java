@@ -19,4 +19,9 @@ public class Nombre extends Expression {
     @Override
     public void verifier() throws SemanticExeption {
     }
+
+    @Override
+    public String toMips() {
+        return String.valueOf(val);
+    }
 }

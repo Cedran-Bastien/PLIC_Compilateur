@@ -4,6 +4,7 @@ import plic.Exeption.SemanticExeption;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class Bloc {
@@ -21,6 +22,24 @@ public class Bloc {
         for (Instruction instruction : this.instructions) {
             instruction.verifier();
         }
+    }
+
+    public String toMips() {
+        String mipsCode = this.instructions.stream()
+                .map(Instruction::toMips)
+                .collect(Collectors.joining("\n"));
+
+
+        int nbVariable = TDS.getInstance().declarationRequirement.size();
+        int spaceToSave = nbVariable*4;
+        return ".data\n" +
+                "linebreak: \t.asciiz \"\\n\"\n" +
+                ".text\n" +
+                "main:\n" +
+                "move $s7,$sp\n" +
+                "add $sp,$sp,-" + spaceToSave + "\n" +
+                mipsCode;
+
     }
 
     @Override
