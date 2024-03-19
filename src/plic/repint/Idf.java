@@ -2,7 +2,7 @@ package plic.repint;
 
 import plic.Exeption.SemanticExeption;
 
-public class Idf extends Expression{
+public class Idf extends Acces{
     String nom;
 
     public Idf(String name) {

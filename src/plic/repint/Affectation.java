@@ -3,10 +3,10 @@ package plic.repint;
 import plic.Exeption.SemanticExeption;
 
 public class Affectation extends Instruction {
-    Idf identifiant;
+    Acces identifiant;
     Expression expression;
 
-    public Affectation(Idf identifiant, Expression expression) {
+    public Affectation(Acces identifiant, Expression expression) {
         this.identifiant = identifiant;
         this.expression = expression;
     }

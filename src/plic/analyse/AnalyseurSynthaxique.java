@@ -53,12 +53,20 @@ public class AnalyseurSynthaxique {
         this.analyseBloc();
     }
 
-    private Idf analyseAcces() throws SyntaxeException{
+    private Acces analyseAcces() throws SyntaxeException{
         if (!estIdf()){
             throw new SyntaxeException("Identifier must not be 'programme' and should just contains lowercase and uppercase");
         }
-        Idf acces = new Idf(uniteCourante);
-        uniteCourante = analyseurLexical.next();
+        String nom = uniteCourante;
+        Acces acces = new Idf(nom);
+        uniteCourante = this.analyseurLexical.next();
+        if (uniteCourante.equals("[")){
+            uniteCourante = this.analyseurLexical.next();
+            Expression expression = this.analyseExpression();
+            analyseTerminal(uniteCourante.equals("]"), "missing character ']'");
+            acces = new AccesTableau(nom, expression);
+        }
+
         return acces;
     }
 
@@ -67,11 +75,15 @@ public class AnalyseurSynthaxique {
         return pattern.matcher(uniteCourante).matches() && Arrays.stream(AnalyseurSynthaxique.RESERVE_WORD).noneMatch((item) -> Objects.equals(item, uniteCourante));
     }
 
+    private boolean estType() {
+        return uniteCourante.equals("entier") | uniteCourante.equals("tableau");
+    }
+
     private void analyseBloc() throws SyntaxeException, DoubleException {
         // Bloc begin by '{'
         this.analyseTerminal(uniteCourante.equals("{"), "Top level bloc should begin by '{'");
 
-        while (uniteCourante.equals("entier")){
+        while (uniteCourante.equals("entier") || uniteCourante.equals("tableau")){
             this.analyseDeclaration();
         }
         if (uniteCourante.equals("}")){
@@ -96,7 +108,22 @@ public class AnalyseurSynthaxique {
     }
 
     private void analyseType() throws SyntaxeException {
-        this.analyseTerminal(uniteCourante.equals("entier"), "accepted type : 'entier'");
+        if (!uniteCourante.equals("entier")){
+            analyseTableau();
+        }
+    }
+
+    private void analyseTableau() throws SyntaxeException {
+        if (!uniteCourante.equals("tableau")) {
+            throw new SyntaxeException("Declaration must begin by 'entier' ou 'tableau'");
+        }
+        uniteCourante = analyseurLexical.next();
+        analyseTerminal(uniteCourante.equals("["), "Array declaration must have '[Int value]'");
+        if (!estCsteEntier() || uniteCourante == null){
+            throw new SyntaxeException("'" + uniteCourante + "' is not an integer");
+        }
+        uniteCourante = analyseurLexical.next();
+        analyseTerminal(uniteCourante.equals("]"), "Array declaration must have '[Int value]'");
     }
 
     private Instruction analyseInstruction() throws SyntaxeException {
@@ -113,11 +140,11 @@ public class AnalyseurSynthaxique {
     }
 
     private Instruction analyseAffectation() throws SyntaxeException{
-        Idf idf = this.analyseAcces();
+        Acces acces = this.analyseAcces();
         this.analyseTerminal(uniteCourante.equals(":="), "accepted type : 'entier'");
         Expression expression = this.analyseExpression();
         this.checkEndInstructionDeclaration();
-        return new Affectation(idf, expression);
+        return new Affectation(acces, expression);
     }
 
     private void checkEndInstructionDeclaration() throws SyntaxeException {

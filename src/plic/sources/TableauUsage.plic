@@ -1,0 +1,6 @@
+programme test {
+    tableau [ 10 ] a ;
+    tableau [ 11 ] b ;
+
+    a [ b [ 2 ] ] := b [ a [ 5 ] ] ;
+}

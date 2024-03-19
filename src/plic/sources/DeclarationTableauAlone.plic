@@ -1,0 +1,4 @@
+programme test {
+    tableau [ 10 ] a ;
+    tableau [ 11 ] b ;
+}

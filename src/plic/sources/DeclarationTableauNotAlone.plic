@@ -1,0 +1,5 @@
+programme test {
+    tableau[10] a ; entier i ;
+
+    tableau[11] b ;
+}

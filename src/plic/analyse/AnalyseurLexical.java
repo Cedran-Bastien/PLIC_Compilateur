@@ -26,10 +26,6 @@ public class AnalyseurLexical {
             next = this.next();
         }
 
-
-
-
         return next;
-
     }
 }
