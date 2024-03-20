@@ -24,21 +24,30 @@ public class Bloc {
         }
     }
 
-    public String toMips() {
-        String mipsCode = this.instructions.stream()
-                .map(Instruction::toMips)
-                .collect(Collectors.joining("\n"));
+    public String toMips() throws SemanticExeption {
 
+        String mipsCode = "";
+        for (Instruction i : this.instructions){
+            mipsCode += i.toMips() + "\n";
+        }
 
-        int nbVariable = TDS.getInstance().declarationRequirement.size();
-        int spaceToSave = nbVariable*4;
+        int spaceToSave  = TDS.getInstance().dptDepl;
         return ".data\n" +
                 "linebreak: \t.asciiz \"\\n\"\n" +
+                "tabOutOfRangeIndex: .asciiz  \"ERREUR: indice out of range\"\n" +
                 ".text\n" +
                 "main:\n" +
                 "move $s7,$sp\n" +
-                "add $sp,$sp,-" + spaceToSave + "\n" +
-                mipsCode;
+                "add $sp,$sp, " + spaceToSave + "\n" +
+                mipsCode + """
+                Exit:
+                    li $v0, 4 	# $v0 <- code du print
+                	syscall 	# afficher
+                    li $v0, 10
+                    syscall
+                EndIf:
+              
+                """;
 
     }
 

@@ -31,7 +31,8 @@ public class TDS {
 
         // Set deplacement
         symbole.deplacement = dptDepl;
-        this.dptDepl -= 4;
+        this.dptDepl -= symbole.type.equals("tableau") ? symbole.arrayLength * 4 : 4;
+
 
         this.declarationRequirement.put(entree, symbole);
         System.out.println();

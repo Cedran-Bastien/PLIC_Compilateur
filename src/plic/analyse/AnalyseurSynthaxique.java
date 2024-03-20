@@ -53,18 +53,19 @@ public class AnalyseurSynthaxique {
         this.analyseBloc();
     }
 
-    private Acces analyseAcces() throws SyntaxeException{
-        if (!estIdf()){
-            throw new SyntaxeException("Identifier must not be 'programme' and should just contains lowercase and uppercase");
-        }
+    private Idf analyseAcces() throws SyntaxeException{
         String nom = uniteCourante;
-        Acces acces = new Idf(nom);
-        uniteCourante = this.analyseurLexical.next();
-        if (uniteCourante.equals("[")){
+        Idf acces = new Idf(nom);
+        if (estIdf()){
             uniteCourante = this.analyseurLexical.next();
-            Expression expression = this.analyseExpression();
-            analyseTerminal(uniteCourante.equals("]"), "missing character ']'");
-            acces = new AccesTableau(nom, expression);
+            if (uniteCourante.equals("[")){
+                uniteCourante = this.analyseurLexical.next();
+                Expression expression = this.analyseExpression();
+                analyseTerminal(uniteCourante.equals("]"), "missing character ']'");
+                acces = new AccesTableau(nom, expression);
+            }
+        }else {
+            throw new SyntaxeException("Identifier missing - identifier must not be 'programme' and should just contains lowercase and uppercase");
         }
 
         return acces;
@@ -99,31 +100,38 @@ public class AnalyseurSynthaxique {
     }
 
     private void analyseDeclaration() throws SyntaxeException, DoubleException {
-        Symbole symbole = new Symbole(uniteCourante);
         this.analyseType();
+        Symbole symbole = null;
+        if (uniteCourante.equals("tableau")){
+             symbole = analyseTableau();
+        }else {
+            symbole = new Symbole(uniteCourante);
+            uniteCourante = this.analyseurLexical.next();
+        }
         Entree entree = new Entree(uniteCourante);
-        this.analyseAcces();
         TDS.getInstance().ajouter(entree, symbole);
-        this.analyseTerminal(uniteCourante.equals(";"), "missing character ';");
+        uniteCourante = this.analyseurLexical.next();
+        this.analyseTerminal(uniteCourante.equals(";"), "missing character ';'");
     }
 
     private void analyseType() throws SyntaxeException {
-        if (!uniteCourante.equals("entier")){
-            analyseTableau();
+        if (!uniteCourante.equals("entier") && !uniteCourante.equals("tableau")){
+            throw new SyntaxeException("Declaration must begin by 'entier' ou 'tableau'");
         }
     }
 
-    private void analyseTableau() throws SyntaxeException {
-        if (!uniteCourante.equals("tableau")) {
-            throw new SyntaxeException("Declaration must begin by 'entier' ou 'tableau'");
-        }
+    private Symbole analyseTableau() throws SyntaxeException {
+        String type = uniteCourante;
         uniteCourante = analyseurLexical.next();
         analyseTerminal(uniteCourante.equals("["), "Array declaration must have '[Int value]'");
         if (!estCsteEntier() || uniteCourante == null){
             throw new SyntaxeException("'" + uniteCourante + "' is not an integer");
         }
+        Symbole res = new Symbole(type, Integer.parseInt(uniteCourante));
         uniteCourante = analyseurLexical.next();
         analyseTerminal(uniteCourante.equals("]"), "Array declaration must have '[Int value]'");
+
+        return res;
     }
 
     private Instruction analyseInstruction() throws SyntaxeException {
@@ -140,7 +148,7 @@ public class AnalyseurSynthaxique {
     }
 
     private Instruction analyseAffectation() throws SyntaxeException{
-        Acces acces = this.analyseAcces();
+        Idf acces = this.analyseAcces();
         this.analyseTerminal(uniteCourante.equals(":="), "accepted type : 'entier'");
         Expression expression = this.analyseExpression();
         this.checkEndInstructionDeclaration();

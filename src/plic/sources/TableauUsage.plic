@@ -1,6 +1,13 @@
 programme test {
+    entier c ;
     tableau [ 10 ] a ;
     tableau [ 11 ] b ;
 
-    a [ b [ 2 ] ] := b [ a [ 5 ] ] ;
+    b [ 0 ] := 9 ;
+    c := 0 ;
+    a [ 5 ] := c ;
+
+    a [ 0 ] := b [ a [ 5 ] ] ;
+
+    ecrire a [ 0 ] ;
 }

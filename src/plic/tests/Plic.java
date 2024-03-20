@@ -37,8 +37,7 @@ public class Plic {
         try {
             Bloc bloc = analyseurSynthaxique.analyse();
             bloc.verifier();
-            System.out.println(bloc);
-//            System.out.println(bloc.toMips());
+            System.out.println(bloc.toMips());
         }catch (SyntaxeException | DoubleException | SemanticExeption syntaxeException){
             System.out.println("ERREUR: " + syntaxeException.getMessage());
         }

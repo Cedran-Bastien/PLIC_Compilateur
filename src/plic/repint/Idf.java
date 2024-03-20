@@ -2,7 +2,7 @@ package plic.repint;
 
 import plic.Exeption.SemanticExeption;
 
-public class Idf extends Acces{
+public class Idf extends Expression{
     String nom;
 
     public Idf(String name) {
@@ -22,14 +22,10 @@ public class Idf extends Acces{
     }
 
     @Override
-    public String toMips() {
+    public String toMips() throws SemanticExeption {
         String memoryEmplacment = "";
-        try {
-            memoryEmplacment = String.valueOf(TDS.getInstance().identifier(new Entree(this.nom)).deplacement) ;
-        } catch (SemanticExeption semanticExeption){
-            System.out.println("ERREUR:" + semanticExeption.getMessage());
-        }
+        memoryEmplacment = String.valueOf(TDS.getInstance().identifier(new Entree(this.nom)).deplacement) ;
         return """
-            %s($s7)""".formatted(memoryEmplacment);
+            add $a0, $s7,  %s""".formatted(memoryEmplacment);
     }
 }

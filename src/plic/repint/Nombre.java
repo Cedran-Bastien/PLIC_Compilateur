@@ -17,11 +17,16 @@ public class Nombre extends Expression {
     }
 
     @Override
-    public void verifier() throws SemanticExeption {
-    }
+    public void verifier() throws SemanticExeption {}
 
     @Override
     public String toMips() {
-        return String.valueOf(val);
+        return """
+                %s\n
+                """.formatted(String.valueOf(val));
+    }
+
+    public int getVal() {
+        return val;
     }
 }
